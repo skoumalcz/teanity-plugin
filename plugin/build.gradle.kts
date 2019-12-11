@@ -1,7 +1,11 @@
 plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
+    `maven-publish`
 }
+
+apply(plugin = "maven")
+apply(plugin = "maven-publish")
 
 gradlePlugin {
     plugins {
