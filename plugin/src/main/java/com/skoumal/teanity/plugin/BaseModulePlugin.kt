@@ -7,6 +7,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.*
+import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class BaseModulePlugin : Plugin<Project> {
@@ -21,6 +22,25 @@ class BaseModulePlugin : Plugin<Project> {
 
         target.applyOptions()
         target.applyAndroid()
+        target.applyKapt()
+    }
+
+    private fun Project.applyKapt() {
+        afterEvaluate {
+            if (plugins.hasPlugin("kotlin-kapt")) return@afterEvaluate
+            extensions.getByType(KaptExtension::class).apply {
+                correctErrorTypes = true
+                useBuildCache = true
+                mapDiagnosticLocations = true
+                arguments {
+                    arg("room.schemaLocation", "$projectDir/schemas")
+                    arg("moshi.generated", "javax.annotation.Generated")
+                }
+                javacOptions {
+                    option("-Xmaxerrs", 1000)
+                }
+            }
+        }
     }
 
     private fun Project.applyAndroid() {
