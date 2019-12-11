@@ -45,11 +45,6 @@ class BaseModulePlugin : Plugin<Project> {
 
     private fun Project.applyAndroid() {
         (extensions.getByName("android") as? BaseExtension)?.apply {
-            defaultConfig {
-                versionCode = 1
-                versionName = "1.0.0"
-            }
-
             val proguardFile = "proguard-rules.pro"
             when (this) {
                 is LibraryExtension -> defaultConfig {
