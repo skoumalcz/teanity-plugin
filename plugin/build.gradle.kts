@@ -10,7 +10,7 @@ apply(plugin = "maven-publish")
 gradlePlugin {
     plugins {
         register("teanity-plugin") {
-            id = "com.skoumal.teanity.plugin"
+            id = "teanity"
             implementationClass = "com.skoumal.teanity.plugin.BaseModulePlugin"
         }
     }
