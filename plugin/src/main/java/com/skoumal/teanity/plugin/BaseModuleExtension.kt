@@ -3,7 +3,6 @@ package com.skoumal.teanity.plugin
 import org.gradle.api.Action
 
 open class BaseModuleExtension {
-    open var useKapt = false
     internal open val modules = TeanityOptions()
     internal open val version = VersionOptions()
 

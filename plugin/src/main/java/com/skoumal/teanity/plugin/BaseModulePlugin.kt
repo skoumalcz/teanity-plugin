@@ -73,9 +73,6 @@ class BaseModulePlugin : Plugin<Project> {
     private fun Project.applyOptions() {
         afterEvaluate {
             val extension = extensions.getByType<BaseModuleExtension>()
-            if (extension.useKapt) {
-                plugins.apply("kotlin-kapt")
-            }
             if (extension.modules.usesTeanity) {
                 dependencies { applyTeanity(extension.modules) }
             }
