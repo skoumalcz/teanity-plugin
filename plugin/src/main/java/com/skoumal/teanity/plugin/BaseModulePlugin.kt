@@ -63,14 +63,16 @@ class BaseModulePlugin : Plugin<Project> {
             }
         }
 
-        val extension = extensions.getByType<BaseModuleExtension>()
-        // corresponds to branches @ https://github.com/skoumalcz/gradle-git-android-version
-        when (extension.version.versionType) {
-            VersionType.SEMANTIC -> "semantic"
-            VersionType.INTEGRATION -> "integration"
-            else -> null
-        }?.let {
-            apply(from = "https://raw.githubusercontent.com/skoumalcz/gradle-git-android-version/$it/android-version.gradle")
+        afterEvaluate {
+            val extension = extensions.getByType<BaseModuleExtension>()
+            // corresponds to branches @ https://github.com/skoumalcz/gradle-git-android-version
+            when (extension.version.versionType) {
+                VersionType.SEMANTIC -> "semantic"
+                VersionType.INTEGRATION -> "integration"
+                else -> null
+            }?.let {
+                apply(from = "https://raw.githubusercontent.com/skoumalcz/gradle-git-android-version/$it/android-version.gradle")
+            }
         }
     }
 
