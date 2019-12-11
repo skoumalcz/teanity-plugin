@@ -55,6 +55,10 @@ class BaseModulePlugin : Plugin<Project> {
             project.tasks.withType(KotlinCompile::class.java).configureEach {
                 kotlinOptions {
                     jvmTarget = "1.8"
+                    freeCompilerArgs = listOf(
+                        "-Xallow-result-return-type",
+                        "-Xuse-experimental=kotlin.Experimental"
+                    )
                 }
             }
         }
