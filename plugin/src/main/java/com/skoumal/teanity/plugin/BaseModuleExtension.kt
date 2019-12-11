@@ -14,7 +14,8 @@ open class BaseModuleExtension {
 
 open class TeanityOptions {
     internal val usesTeanity
-        get() = useComponent || useCore || useDI || usePersistence || useNetwork || useUI || useTest || useTestUI
+        get() = useComponent || useCore || useDI || usePersistence || useNetwork || useUI ||
+                useTest || useTestUI
 
     open fun useAll() {
         useComponent = true
@@ -39,10 +40,9 @@ open class TeanityOptions {
 
 
 open class VersionOptions {
-    open var useAutoVersion = false
-    open var versionType = VersionType.SEMANTIC
+    open var versionType = VersionType.NONE
 }
 
 enum class VersionType {
-    SEMANTIC, INTEGRATION
+    SEMANTIC, INTEGRATION, NONE
 }

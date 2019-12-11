@@ -58,13 +58,13 @@ class BaseModulePlugin : Plugin<Project> {
         }
 
         val extension = extensions.getByType<BaseModuleExtension>()
-        if (extension.version.useAutoVersion) {
-            // corresponds to branches @ https://github.com/skoumalcz/gradle-git-android-version
-            val branch = when (extension.version.versionType) {
-                VersionType.SEMANTIC -> "semantic"
-                VersionType.INTEGRATION -> "integration"
-            }
-            apply(from = "https://raw.githubusercontent.com/skoumalcz/gradle-git-android-version/$branch/android-version.gradle")
+        // corresponds to branches @ https://github.com/skoumalcz/gradle-git-android-version
+        when (extension.version.versionType) {
+            VersionType.SEMANTIC -> "semantic"
+            VersionType.INTEGRATION -> "integration"
+            else -> null
+        }?.let {
+            apply(from = "https://raw.githubusercontent.com/skoumalcz/gradle-git-android-version/$it/android-version.gradle")
         }
     }
 
@@ -93,6 +93,7 @@ class BaseModulePlugin : Plugin<Project> {
             add("api", teanity("di"))
         }
         if (definition.usePersistence) {
+            // todo provide compiler
             add("api", teanity("persistence"))
         }
         if (definition.useUI) {
