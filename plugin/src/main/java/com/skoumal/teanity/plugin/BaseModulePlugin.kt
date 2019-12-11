@@ -98,6 +98,9 @@ class BaseModulePlugin : Plugin<Project> {
         if (definition.useUI) {
             add("api", teanity("ui"))
         }
+        if (definition.useNetwork) {
+            add("api", teanity("network"))
+        }
         if (definition.useTest) {
             add("testImplementation", teanity("test"))
         }

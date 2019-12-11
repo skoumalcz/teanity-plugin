@@ -14,13 +14,14 @@ open class BaseModuleExtension {
 
 open class TeanityOptions {
     internal val usesTeanity
-        get() = useComponent || useCore || useDI || usePersistence || useUI || useTest || useTestUI
+        get() = useComponent || useCore || useDI || usePersistence || useNetwork || useUI || useTest || useTestUI
 
     open fun useAll() {
         useComponent = true
         useCore = true
         useDI = true
         usePersistence = true
+        useNetwork = true
         useUI = true
         useTest = true
         useTestUI = true
@@ -30,6 +31,7 @@ open class TeanityOptions {
     open var useCore = false
     open var useDI = false
     open var usePersistence = false
+    open var useNetwork = false
     open var useUI = false
     open var useTest = false
     open var useTestUI = false
