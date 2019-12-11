@@ -36,6 +36,8 @@ open class TeanityOptions {
     open var useUI = false
     open var useTest = false
     open var useTestUI = false
+
+    open var version = "1.0.+"
 }
 
 

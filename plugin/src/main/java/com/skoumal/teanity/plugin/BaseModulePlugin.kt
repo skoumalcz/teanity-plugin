@@ -17,6 +17,8 @@ class BaseModulePlugin : Plugin<Project> {
             apply("kotlin-android-extensions")
         }
 
+        target.extensions.create<BaseModuleExtension>("teanity")
+
         target.applyOptions()
         target.applyAndroid()
     }
@@ -69,8 +71,6 @@ class BaseModulePlugin : Plugin<Project> {
     }
 
     private fun Project.applyOptions() {
-        extensions.create<BaseModuleExtension>("teanity")
-
         afterEvaluate {
             val extension = extensions.getByType<BaseModuleExtension>()
             if (extension.useKapt) {
@@ -83,36 +83,37 @@ class BaseModulePlugin : Plugin<Project> {
     }
 
     private fun DependencyHandlerScope.applyTeanity(definition: TeanityOptions) {
+        val version = definition.version
         if (definition.useComponent) {
-            add("api", teanity("component"))
+            add("api", teanity("component", version))
         }
         if (definition.useCore) {
-            add("api", teanity("core"))
+            add("api", teanity("core", version))
         }
         if (definition.useDI) {
-            add("api", teanity("di"))
+            add("api", teanity("di", version))
         }
         if (definition.usePersistence) {
             // todo provide compiler
-            add("api", teanity("persistence"))
+            add("api", teanity("persistence", version))
         }
         if (definition.useUI) {
-            add("api", teanity("ui"))
+            add("api", teanity("ui", version))
         }
         if (definition.useNetwork) {
-            add("api", teanity("network"))
+            add("api", teanity("network", version))
         }
         if (definition.useTest) {
-            add("testImplementation", teanity("test"))
+            add("testImplementation", teanity("test", version))
         }
         if (definition.useTestUI) {
-            add("androidTestImplementation", teanity("test-ui"))
+            add("androidTestImplementation", teanity("test-ui", version))
         }
     }
 
     private companion object {
 
-        private fun teanity(module: String, version: String = "1.0.+") =
+        private fun teanity(module: String, version: String) =
             "com.skoumal.teanity:$module:$version"
 
     }
