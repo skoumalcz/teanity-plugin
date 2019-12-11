@@ -87,6 +87,12 @@ class BaseModulePlugin : Plugin<Project> {
 
     private fun DependencyHandlerScope.applyTeanity(definition: TeanityOptions) {
         val version = definition.version
+
+        if (definition.usesAll) {
+            add("api", "com.skoumal:teanity:$version")
+            return
+        }
+
         if (definition.useComponent) {
             add("api", teanity("component", version))
         }
