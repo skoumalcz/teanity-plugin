@@ -88,12 +88,12 @@ class BaseModulePlugin : Plugin<Project> {
                 return@afterEvaluate
             }
             val extension = extensions.getByType<BaseModuleExtension>()
-            // corresponds to branches @ https://github.com/skoumalcz/gradle-git-android-version
-            val result = when (extension.version.versionType) {
-                VersionType.SEMANTIC -> "semantic"
-                VersionType.INTEGRATION -> "integration"
-                else -> null
-            }?.let { setVersionIntegrator(VersionIntegrator(this, it)) }
+            val integrator = VersionIntegrator(
+                this,
+                extension.version.versionType
+            ) ?: return@afterEvaluate
+
+            setVersionIntegrator(integrator)
         }
     }
 
