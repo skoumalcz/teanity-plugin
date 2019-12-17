@@ -21,6 +21,7 @@ class BaseModulePlugin : Plugin<Project> {
         target.plugins.apply {
             apply("kotlin-android")
             apply("kotlin-android-extensions")
+            apply("kotlin-kapt")
         }
 
         target.extensions.create<BaseModuleExtension>("teanity")
@@ -32,7 +33,6 @@ class BaseModulePlugin : Plugin<Project> {
 
     private fun Project.applyKapt() {
         afterEvaluate {
-            if (!plugins.hasPlugin("kotlin-kapt")) return@afterEvaluate
             extensions.getByType(KaptExtension::class).apply {
                 correctErrorTypes = true
                 useBuildCache = true
