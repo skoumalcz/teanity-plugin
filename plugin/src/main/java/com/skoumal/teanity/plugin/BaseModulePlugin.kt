@@ -3,10 +3,15 @@ package com.skoumal.teanity.plugin
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+import com.skoumal.teanity.plugin.version.VersionIntegrator
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.*
+import org.gradle.kotlin.dsl.DependencyHandlerScope
+import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -88,11 +93,7 @@ class BaseModulePlugin : Plugin<Project> {
                 VersionType.SEMANTIC -> "semantic"
                 VersionType.INTEGRATION -> "integration"
                 else -> null
-            }?.let {
-                apply(from = "https://raw.githubusercontent.com/skoumalcz/gradle-git-android-version/$it/android-version.gradle")
-            }
-
-            println("Task > :$name:applyVersion ${if (result == null) "UP-TO-DATE" else ""}")
+            }?.let { setVersionIntegrator(VersionIntegrator(this, it)) }
         }
     }
 
@@ -137,6 +138,22 @@ class BaseModulePlugin : Plugin<Project> {
         }
         if (definition.useTestUI) {
             add("androidTestImplementation", teanity("test-ui", version))
+        }
+    }
+
+    private fun Project.setVersionIntegrator(version: VersionIntegrator) {
+        val android = extensions.getByName("android") as AppExtension
+        val versionName = version.versionName
+        val versionCode = version.versionCode
+
+        android.applicationVariants.all {
+            outputs.all {
+                this as ApkVariantOutputImpl
+                versionNameOverride = versionName
+                versionCodeOverride = versionCode
+
+                println("> Task :${project.name}:${name}:version [$versionNameOverride ($versionCodeOverride)]")
+            }
         }
     }
 
