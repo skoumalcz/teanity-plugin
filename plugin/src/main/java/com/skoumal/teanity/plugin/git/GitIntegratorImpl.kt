@@ -44,8 +44,8 @@ class GitIntegratorIntegrationImpl(
                 commandLine("git", "describe", "--match", "${year}.*-*", "--long")
             }
 
-            val prefix = "/"
-            val postfix = ""
+            val prefix = ""
+            val postfix = "-"
             val tag = output.toString().trim()
 
             tag.substring(
