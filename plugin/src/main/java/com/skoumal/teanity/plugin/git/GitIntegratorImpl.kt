@@ -41,17 +41,13 @@ class GitIntegratorIntegrationImpl(
 
             project.exec {
                 standardOutput = output
-                commandLine("git", "describe", "--match", "\"${year}.*-*\"", "--long")
+                commandLine("git", "describe", "--match", "${year}.*-*", "--long")
             }
 
-            val prefix = ""
             val postfix = "-"
             val tag = output.toString().trim()
 
-            tag.substring(
-                tag.lastIndexOf(prefix) + prefix.length,
-                tag.indexOf(postfix)
-            )
+            tag.substring(0, tag.indexOf(postfix))
         }.fold(onSuccess = { it }, onFailure = { "$year.1" })
 
 }
