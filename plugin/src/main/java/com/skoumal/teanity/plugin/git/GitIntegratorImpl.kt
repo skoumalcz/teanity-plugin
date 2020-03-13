@@ -41,7 +41,7 @@ class GitIntegratorIntegrationImpl(
 
             project.exec {
                 standardOutput = output
-                commandLine("git", "describe", "--match", "${year}.*-*")
+                commandLine("git", "describe", "--match", "${year}.*-*", "--long")
             }
 
             val prefix = "/"
