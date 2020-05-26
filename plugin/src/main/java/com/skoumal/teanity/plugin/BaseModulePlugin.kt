@@ -88,10 +88,7 @@ class BaseModulePlugin : Plugin<Project> {
                 return@afterEvaluate
             }
             val extension = extensions.getByType<BaseModuleExtension>()
-            val integrator = VersionIntegrator(
-                this,
-                extension.version.versionType
-            ) ?: return@afterEvaluate
+            val integrator = VersionIntegrator(this, extension.version) ?: return@afterEvaluate
 
             setVersionIntegrator(integrator)
         }

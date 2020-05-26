@@ -13,6 +13,8 @@ reusable plugin.
     * disabled by default
 * setting versions from git
     * disabled by default
+    * allows for adjusting version code by predefined multiplier
+        * this might be beneficial for projects that do not conform with the version types defined below
     * options
         * `com.skoumal.teanity.plugin.VersionType.NONE` (default)
         * `com.skoumal.teanity.plugin.VersionType.SEMANTIC` (1.5.20)
@@ -56,6 +58,9 @@ teanity {
     }
     version {
         versionType = com.skoumal.teanity.plugin.VersionType.SEMANTIC
+        // if semantic version == 1.5.20, then version code will be 10520. you can offset this 
+        // number by the multiplier so in this case it will be 10520000
+        versionCodeMultiplier = 1000 // note that it must be a positive number, defaults to 1
     }
 }
 

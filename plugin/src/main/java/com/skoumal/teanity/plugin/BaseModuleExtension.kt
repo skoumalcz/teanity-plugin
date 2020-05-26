@@ -77,6 +77,13 @@ open class TeanityOptions {
 
 open class VersionOptions {
     open var versionType = VersionType.NONE
+    open var versionCodeMultiplier = 1
+        set(value) {
+            if (value <= 0) {
+                throw IllegalArgumentException("versionCodeMultiplier must be greater than 0")
+            }
+            field = value
+        }
 }
 
 enum class VersionType {

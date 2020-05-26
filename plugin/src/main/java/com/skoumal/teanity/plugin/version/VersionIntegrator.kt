@@ -1,5 +1,6 @@
 package com.skoumal.teanity.plugin.version
 
+import com.skoumal.teanity.plugin.VersionOptions
 import com.skoumal.teanity.plugin.VersionType
 import org.gradle.api.Project
 
@@ -10,11 +11,18 @@ interface VersionIntegrator {
 
     companion object {
 
-        operator fun invoke(project: Project, type: VersionType): VersionIntegrator? = when (type) {
-            VersionType.SEMANTIC -> VersionIntegratorSemanticImpl(project)
-            VersionType.INTEGRATION -> VersionIntegratorIntegrationImpl(project)
-            else -> null
-        }
+        operator fun invoke(project: Project, type: VersionOptions): VersionIntegrator? =
+            when (type.versionType) {
+                VersionType.SEMANTIC -> VersionIntegratorSemanticImpl(
+                    project,
+                    type.versionCodeMultiplier
+                )
+                VersionType.INTEGRATION -> VersionIntegratorIntegrationImpl(
+                    project,
+                    type.versionCodeMultiplier
+                )
+                else -> null
+            }
 
     }
 
