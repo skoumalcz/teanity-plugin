@@ -140,7 +140,7 @@ class BaseModulePlugin : Plugin<Project> {
 
     private fun Project.setVersionIntegrator(
         version: VersionIntegrator,
-        multiplier: VersionCodeOverrideAction
+        overrider: VersionCodeOverrideAction
     ) {
         val android = extensions.getByName("android") as AppExtension
         val versionName = version.versionName
@@ -150,7 +150,7 @@ class BaseModulePlugin : Plugin<Project> {
             outputs.all {
                 this as ApkVariantOutputImpl
                 versionNameOverride = versionName
-                versionCodeOverride = (versionCode * multiplier.invoke(this, versionCode)).toInt()
+                versionCodeOverride = overrider.invoke(this, versionCode).toInt()
 
                 println("> Task :${project.name}:${name}:version [$versionNameOverride ($versionCodeOverride)]")
             }
