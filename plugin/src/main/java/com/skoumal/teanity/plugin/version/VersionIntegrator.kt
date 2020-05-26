@@ -7,20 +7,14 @@ import org.gradle.api.Project
 interface VersionIntegrator {
 
     val versionName: String
-    val versionCode: Int
+    val versionCode: Long
 
     companion object {
 
         operator fun invoke(project: Project, type: VersionOptions): VersionIntegrator? =
             when (type.versionType) {
-                VersionType.SEMANTIC -> VersionIntegratorSemanticImpl(
-                    project,
-                    type.versionCodeMultiplier
-                )
-                VersionType.INTEGRATION -> VersionIntegratorIntegrationImpl(
-                    project,
-                    type.versionCodeMultiplier
-                )
+                VersionType.SEMANTIC -> VersionIntegratorSemanticImpl(project)
+                VersionType.INTEGRATION -> VersionIntegratorIntegrationImpl(project)
                 else -> null
             }
 

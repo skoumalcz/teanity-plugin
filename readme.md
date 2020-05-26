@@ -60,7 +60,9 @@ teanity {
         versionType = com.skoumal.teanity.plugin.VersionType.SEMANTIC
         // if semantic version == 1.5.20, then version code will be 10520. you can offset this 
         // number by the multiplier so in this case it will be 10520000
-        versionCodeMultiplier = 1000 // note that it must be a positive number, defaults to 1
+        versionCodeOverride { // this: ApkVariantOutput ->
+            1000 // note that it must be a positive number, defaults to 1
+        }
     }
 }
 

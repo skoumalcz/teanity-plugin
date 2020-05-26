@@ -1,5 +1,6 @@
 package com.skoumal.teanity.plugin
 
+import com.android.build.gradle.api.ApkVariantOutput
 import org.gradle.api.Action
 
 open class BaseModuleExtension {
@@ -77,15 +78,15 @@ open class TeanityOptions {
 
 open class VersionOptions {
     open var versionType = VersionType.NONE
-    open var versionCodeMultiplier = 1
-        set(value) {
-            if (value <= 0) {
-                throw IllegalArgumentException("versionCodeMultiplier must be greater than 0")
-            }
-            field = value
-        }
+    internal var versionCodeOverride: (VersionCodeOverrideAction) = { 1 }
+
+    fun versionCodeOverride(action: VersionCodeOverrideAction) {
+        versionCodeOverride = action
+    }
 }
 
 enum class VersionType {
     SEMANTIC, INTEGRATION, NONE
 }
+
+typealias VersionCodeOverrideAction = ApkVariantOutput.(versionCode: Long) -> Long

@@ -5,12 +5,11 @@ import org.gradle.api.Project
 
 class VersionIntegratorSemanticImpl(
     private val project: Project,
-    private val multiplier: Int,
     private val git: GitIntegrator = GitIntegrator.semantic(project)
 ) : VersionIntegrator, GitIntegrator by git {
 
     override val versionName: String = latestVersion
-    override val versionCode: Int
+    override val versionCode: Long
         get() {
             val parts = versionName.split('.').toMutableList()
             if (parts.size != 3 || parts[1].length > 2 || parts[2].length > 2) {
@@ -22,19 +21,18 @@ class VersionIntegratorSemanticImpl(
             if (parts[2].length == 1) {
                 parts[2] = "0" + parts[2]
             }
-            return Integer.parseInt(parts[0] + parts[1] + parts[2]) * multiplier
+            return parts.joinToString(separator = "").toLong()
         }
 
 }
 
 class VersionIntegratorIntegrationImpl(
     private val project: Project,
-    private val multiplier: Int,
     private val git: GitIntegrator = GitIntegrator.integration(project)
 ) : VersionIntegrator, GitIntegrator by git {
 
     override val versionName: String = latestVersion
-    override val versionCode: Int
+    override val versionCode: Long
         get() {
             val parts = versionName.split('.')
 
@@ -45,7 +43,7 @@ class VersionIntegratorIntegrationImpl(
             val mainVersion = parts[0].toLong() * 1000 //999 is max range of minVersion
             val minVersion = parts[1].toLong() % 1000
 
-            return (mainVersion + minVersion).toInt() * multiplier
+            return mainVersion + minVersion
         }
 
 }
