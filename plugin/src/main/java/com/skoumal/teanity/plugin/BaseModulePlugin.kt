@@ -116,19 +116,21 @@ class BaseModulePlugin : Plugin<Project> {
         }
         if (definition.useCore) {
             add("api", teanity("core", version))
+            add("kapt", teanity("core-compiler", version))
         }
         if (definition.useDI) {
             add("api", teanity("di", version))
         }
         if (definition.usePersistence) {
-            // todo provide compiler
             add("api", teanity("persistence", version))
+            add("kapt", teanity("persistence-compiler", version))
         }
         if (definition.useUI) {
             add("api", teanity("ui", version))
         }
         if (definition.useNetwork) {
             add("api", teanity("network", version))
+            add("kapt", teanity("network-compiler", version))
         }
         if (definition.useTest) {
             add("testImplementation", teanity("test", version))

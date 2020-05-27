@@ -72,7 +72,7 @@ open class TeanityOptions {
         get() = components[TeanityModules.TEST_UI] ?: false
         set(value) = components.set(TeanityModules.TEST_UI, value)
 
-    open var version = "1.0.+"
+    open var version = "1.1.+"
 }
 
 
