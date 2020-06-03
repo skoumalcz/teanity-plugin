@@ -51,3 +51,38 @@ class GitIntegratorIntegrationImpl(
         }.fold(onSuccess = { it }, onFailure = { "$year.1" })
 
 }
+
+class GitIntegratorCIImpl(
+    private val project: Project
+) : GitIntegrator {
+
+    override val latestVersion: String
+        get() = "%s-%s (%s)".format(
+            branch,
+            commitHash,
+            date
+        )
+
+    private val branch: String
+        get() = kotlin
+            .runCatching { command("git", "rev-parse", "--abbrev-ref", "HEAD") }
+            .fold(onSuccess = { it }, onFailure = { "untracked" })
+
+    private val commitHash: String
+        get() = kotlin
+            .runCatching { command("git", "rev-parse", "--short=7", "HEAD") }
+            .fold(onSuccess = { it }, onFailure = { "detached" })
+
+    private val date: String
+        get() = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+
+    @Throws(Exception::class)
+    private fun command(vararg commands: String): String {
+        val output = ByteArrayOutputStream()
+        project.exec {
+            standardOutput = output
+            commandLine(*commands)
+        }
+        return output.toString().trim()
+    }
+}

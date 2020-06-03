@@ -15,6 +15,7 @@ interface VersionIntegrator {
             when (type.versionType) {
                 VersionType.SEMANTIC -> VersionIntegratorSemanticImpl(project)
                 VersionType.INTEGRATION -> VersionIntegratorIntegrationImpl(project)
+                VersionType.CI -> VersionIntegratorCIImpl(project)
                 else -> null
             }
 

@@ -19,6 +19,8 @@ reusable plugin.
         * `com.skoumal.teanity.plugin.VersionType.NONE` (default)
         * `com.skoumal.teanity.plugin.VersionType.SEMANTIC` (1.5.20)
         * `com.skoumal.teanity.plugin.VersionType.INTEGRATION` (2020.30)
+        * `com.skoumal.teanity.plugin.VersionType.CI` (master-0c251ab (01/01/1970 23:56:01))
+            * Please note that you're required to set version code as environment variable "VERSION_CODE"
 
 ### Usage
 
@@ -43,7 +45,7 @@ plugins {
 
 teanity {
     modules {
-        version = "1.x.x-alphaYY" // default "1.0.+"
+        version = "1.x.x-alphaYY" // default "1.1.+"
 
         useComponent = true // default false
         useCore = true // default false

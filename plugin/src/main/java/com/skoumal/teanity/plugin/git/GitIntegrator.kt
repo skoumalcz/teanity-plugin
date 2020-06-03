@@ -10,6 +10,7 @@ interface GitIntegrator {
 
         fun semantic(project: Project): GitIntegrator = GitIntegratorSemanticImpl(project)
         fun integration(project: Project): GitIntegrator = GitIntegratorIntegrationImpl(project)
+        fun ci(project: Project): GitIntegrator = GitIntegratorCIImpl(project)
 
     }
 

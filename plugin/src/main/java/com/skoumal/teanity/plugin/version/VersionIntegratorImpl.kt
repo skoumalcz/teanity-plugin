@@ -47,3 +47,15 @@ class VersionIntegratorIntegrationImpl(
         }
 
 }
+
+class VersionIntegratorCIImpl(
+    private val project: Project,
+    private val git: GitIntegrator = GitIntegrator.ci(project)
+) : VersionIntegrator, GitIntegrator by git {
+
+    override val versionName: String
+        get() = latestVersion
+    override val versionCode: Long
+        get() = System.getenv("VERSION_CODE").toLongOrNull() ?: 0
+
+}
