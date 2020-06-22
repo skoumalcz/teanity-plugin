@@ -2,7 +2,6 @@ package com.skoumal.teanity.plugin
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import com.skoumal.teanity.plugin.version.VersionIntegrator
 import org.gradle.api.JavaVersion
@@ -50,23 +49,6 @@ class BaseModulePlugin : Plugin<Project> {
 
     private fun Project.applyAndroid() {
         (extensions.getByName("android") as? BaseExtension)?.apply {
-            val proguardFile = "proguard-rules.pro"
-            when (this) {
-                is LibraryExtension -> defaultConfig {
-                    consumerProguardFiles(proguardFile)
-                }
-                is AppExtension -> buildTypes {
-                    getByName("release") {
-                        isMinifyEnabled = true
-                        isShrinkResources = true
-                        proguardFiles(
-                            getDefaultProguardFile("proguard-android-optimize.txt"),
-                            proguardFile
-                        )
-                    }
-                }
-            }
-
             // Target at least 1.8, since it's supported by mainstream toolchain
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_1_8
