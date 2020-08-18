@@ -25,7 +25,7 @@ repositories {
 dependencies {
     compileOnly(gradleApi())
 
-    implementation("com.android.tools.build:gradle:4.0.0")
-    implementation(kotlin("gradle-plugin", "1.3.72"))
+    compileOnly("com.android.tools.build:gradle:4.1.0-rc01")
+    implementation(kotlin("gradle-plugin", "1.4.0"))
     implementation(kotlin("android-extensions"))
 }
