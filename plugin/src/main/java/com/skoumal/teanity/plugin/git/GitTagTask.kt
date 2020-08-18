@@ -47,11 +47,12 @@ abstract class GitTagTask : DefaultTask() {
             endIndex = postfixIndex
         )
         val versionCode = _versionOptions.versionCodeOverride
-            .invoke(config.transformVersionCode(versionName))
+            .invoke(identity.get(), config.transformVersionCode(versionName))
 
-        StringBuilder()
+        @Suppress("DEPRECATION")
         return writeResult(
-            appendLine(versionName)
+            StringBuilder()
+                .appendln(versionName)
                 .append(versionCode)
                 .toString()
         )

@@ -19,8 +19,6 @@ reusable plugin.
         * `com.skoumal.teanity.plugin.VersionType.NONE` (default)
         * `com.skoumal.teanity.plugin.VersionType.SEMANTIC` (1.5.20)
         * `com.skoumal.teanity.plugin.VersionType.INTEGRATION` (2020.30)
-        * `com.skoumal.teanity.plugin.VersionType.CI` (master-0c251ab (01/01/1970 23:56:01))
-            * Please note that you're required to set version code as environment variable "VERSION_CODE"
 
 ### Usage
 
@@ -62,7 +60,7 @@ teanity {
         versionType = com.skoumal.teanity.plugin.VersionType.SEMANTIC
         // if semantic version == 1.5.20, then version code will be 10520. you can offset this 
         // number by the multiplier so in this case it will be 10520000
-        versionCodeOverride { versionCode: Long -> // this: ApkVariantOutput
+        versionCodeOverride { versionCode: Long -> // this: ComponentIdentity
             versionCode * 1000 // note that it must be a positive number, defaults to 1
         }
     }
