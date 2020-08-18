@@ -1,9 +1,9 @@
 package com.skoumal.teanity.plugin
 
-import com.android.build.gradle.AppExtension
+import com.android.build.api.variant.VariantOutputConfiguration.OutputType
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
-import com.skoumal.teanity.plugin.version.VersionIntegrator
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.skoumal.teanity.plugin.git.GitTagTask
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -63,16 +63,10 @@ class BaseModulePlugin : Plugin<Project> {
                     )
                 }
             }
-        }
 
-        afterEvaluate {
-            if (!plugins.hasPlugin("com.android.application")) {
-                return@afterEvaluate
+            (this as? BaseAppModuleExtension)?.also {
+                it.setVersionIntegrator(this@applyAndroid)
             }
-            val extension = extensions.getByType<BaseModuleExtension>()
-            val integrator = VersionIntegrator(this, extension.version) ?: return@afterEvaluate
-
-            setVersionIntegrator(integrator, extension.version.versionCodeOverride)
         }
     }
 
@@ -122,22 +116,32 @@ class BaseModulePlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.setVersionIntegrator(
-        version: VersionIntegrator,
-        overrider: VersionCodeOverrideAction
-    ) {
-        val android = extensions.getByName("android") as AppExtension
-        val versionName = version.versionName
-        val versionCode = version.versionCode
-
-        android.applicationVariants.all {
-            outputs.all {
-                this as ApkVariantOutputImpl
-                versionNameOverride = versionName
-                versionCodeOverride = overrider.invoke(this, versionCode).toInt()
-
-                println("> Task :${project.name}:${name}:version [$versionNameOverride ($versionCodeOverride)]")
+    @Suppress("UnstableApiUsage")
+    private fun BaseAppModuleExtension.setVersionIntegrator(project: Project) {
+        onVariantProperties {
+            val mainOutput = this.outputs.single { it.outputType == OutputType.SINGLE }
+            val versionCodeTask = project.tasks.register(
+                "selectGitTagFor${name.capitalize()}",
+                GitTagTask::class.java
+            ) {
+                outputFile.set(project.layout.buildDirectory.file("git-version.txt"))
+                versionOptions.set(project.extensions.getByType<BaseModuleExtension>().version)
+                identity.set(this@onVariantProperties)
             }
+
+            val defaultVersionName = mainOutput.versionName.getOrElse("")
+            val defaultVersionCode = mainOutput.versionCode.getOrElse(0)
+
+            mainOutput.versionName.set(versionCodeTask.map { task ->
+                task.outputFile.runCatching { get().asFile.readLines()[0] }
+                    .fold(onSuccess = { it }, onFailure = { defaultVersionName })
+                    .also { println("Version Name = $it") }
+            })
+            mainOutput.versionCode.set(versionCodeTask.map { task ->
+                task.outputFile.runCatching { get().asFile.readLines()[1].toInt() }
+                    .fold(onSuccess = { it }, onFailure = { defaultVersionCode })
+                    .also { println("Version Code = $it") }
+            })
         }
     }
 

@@ -1,6 +1,6 @@
 package com.skoumal.teanity.plugin
 
-import com.android.build.gradle.api.ApkVariantOutput
+import com.android.build.api.component.ComponentIdentity
 import org.gradle.api.Action
 
 open class BaseModuleExtension {
@@ -86,7 +86,7 @@ open class VersionOptions {
 }
 
 enum class VersionType {
-    SEMANTIC, INTEGRATION, CI, NONE
+    SEMANTIC, INTEGRATION, NONE
 }
 
-typealias VersionCodeOverrideAction = ApkVariantOutput.(versionCode: Long) -> Long
+typealias VersionCodeOverrideAction = ComponentIdentity.(versionCode: Long) -> Long
