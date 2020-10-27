@@ -19,7 +19,7 @@ class BaseModulePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.plugins.apply {
             apply("kotlin-android")
-            apply("kotlin-android-extensions")
+            apply("kotlin-parcelize")
             apply("kotlin-kapt")
         }
 

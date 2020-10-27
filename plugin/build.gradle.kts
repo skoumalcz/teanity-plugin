@@ -20,12 +20,13 @@ repositories {
     google()
     mavenCentral()
     jcenter()
+    maven(url = "https://dl.bintray.com/kotlin/kotlin-dev/")
 }
 
 dependencies {
     compileOnly(gradleApi())
 
-    compileOnly("com.android.tools.build:gradle:4.1.0-rc01")
-    implementation(kotlin("gradle-plugin", "1.4.0"))
-    implementation(kotlin("android-extensions"))
+    compileOnly("com.android.tools.build:gradle:4.2.0-alpha14")
+    implementation(kotlin("gradle-plugin", "1.4.20-RC-202"))
+    implementation(kotlin("parcelize"))
 }
