@@ -28,5 +28,4 @@ dependencies {
 
     compileOnly("com.android.tools.build:gradle:4.2.0-alpha14")
     implementation(kotlin("gradle-plugin", "1.4.20-RC-202"))
-    implementation(kotlin("parcelize"))
 }
